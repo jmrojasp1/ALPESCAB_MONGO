@@ -1,0 +1,501 @@
+{
+  "info": {
+    "_postman_id": "c8f8f1af-3d02-4cc8-8f3c-45c9e49f0d3e",
+    "name": "ALPESCAB Mongo",
+    "description": "Colección lista para probar los endpoints de ALPESCAB.\nIncluye ejemplos y scripts para guardar IDs en el entorno.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Usuarios",
+      "item": [
+        {
+          "name": "Registrar usuario servicio",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const id = json.id?.$oid || json.id;",
+                  "if (id) pm.environment.set('idUsuarioServicio', id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Cliente Demo\",\n  \"correo\": \"cliente@example.com\",\n  \"celular\": \"3001234567\",\n  \"cedula\": \"123456789\",\n  \"roles\": [\"SERVICIO\"],\n  \"tarjetaCredito\": {\n    \"numero\": \"4111111111111111\",\n    \"nombreTarjeta\": \"CLIENTE DEMO\",\n    \"fechaVencimiento\": \"12/28\",\n    \"codigoSeguridad\": \"123\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/operaciones/usuarios/servicio",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "operaciones",
+                "usuarios",
+                "servicio"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Registrar usuario conductor",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const id = json.id?.$oid || json.id;",
+                  "if (id) pm.environment.set('idConductor', id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Conductor Demo\",\n  \"correo\": \"conductor@example.com\",\n  \"celular\": \"3019876543\",\n  \"cedula\": \"987654321\",\n  \"roles\": [\"CONDUCTOR\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/operaciones/usuarios/conductor",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "operaciones",
+                "usuarios",
+                "conductor"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar usuarios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Detalle usuario por id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/{{idUsuarioServicio}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "{{idUsuarioServicio}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Vehiculos",
+      "item": [
+        {
+          "name": "Registrar vehiculo de conductor",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const id = json.id?.$oid || json.id;",
+                  "if (id) pm.environment.set('idVehiculo', id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"AUTO\",\n  \"marca\": \"Toyota\",\n  \"modelo\": \"Corolla\",\n  \"color\": \"Plata\",\n  \"placa\": \"ABC123\",\n  \"ciudadPlaca\": \"Bogota\",\n  \"capacidadPasajeros\": 4,\n  \"nivelTransporte\": \"BASICO\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/operaciones/conductores/{{idConductor}}/vehiculos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "operaciones",
+                "conductores",
+                "{{idConductor}}",
+                "vehiculos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Agregar disponibilidad a vehiculo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"diaSemana\": \"MONDAY\",\n  \"horaInicio\": \"08:00\",\n  \"horaFin\": \"18:00\",\n  \"tiposServicioHabilitados\": [\"BASICO\", \"PREMIUM\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/operaciones/vehiculos/{{idVehiculo}}/disponibilidades",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "operaciones",
+                "vehiculos",
+                "{{idVehiculo}}",
+                "disponibilidades"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Modificar disponibilidad (index 0)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"diaSemana\": \"MONDAY\",\n  \"horaInicio\": \"07:00\",\n  \"horaFin\": \"17:00\",\n  \"tiposServicioHabilitados\": [\"BASICO\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/operaciones/vehiculos/{{idVehiculo}}/disponibilidades/0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "operaciones",
+                "vehiculos",
+                "{{idVehiculo}}",
+                "disponibilidades",
+                "0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar vehiculos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/vehiculos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "vehiculos"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Servicios y revisiones",
+      "item": [
+        {
+          "name": "Solicitar servicio",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const id = json.id?.$oid || json.id;",
+                  "if (id) pm.environment.set('idServicio', id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipoServicio\": \"VIAJE\",\n  \"nivelTransporte\": \"BASICO\",\n  \"idUsuarioServicio\": \"{{idUsuarioServicio}}\",\n  \"idVehiculo\": \"{{idVehiculo}}\",\n  \"puntosRuta\": [\n    {\n      \"orden\": 1,\n      \"latitud\": 4.651,\n      \"longitud\": -74.083,\n      \"direccion\": \"Punto de recogida\",\n      \"ciudad\": \"Bogota\"\n    },\n    {\n      \"orden\": 2,\n      \"latitud\": 4.65,\n      \"longitud\": -74.1,\n      \"direccion\": \"Destino\",\n      \"ciudad\": \"Bogota\"\n    }\n  ],\n  \"ciudadPrincipal\": \"Bogota\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/operaciones/servicios/solicitar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "operaciones",
+                "servicios",
+                "solicitar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Finalizar servicio",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.environment.set('horaFinMillis', Date.now());"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"horaFin\": {{horaFinMillis}},\n  \"costoTotal\": 25000,\n  \"distanciaKm\": 12.5\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/operaciones/servicios/{{idServicio}}/finalizar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "operaciones",
+                "servicios",
+                "{{idServicio}}",
+                "finalizar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear revision de servicio",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"SERVICIO\",\n  \"idServicio\": \"{{idServicio}}\",\n  \"idRevisor\": \"{{idUsuarioServicio}}\",\n  \"idRevisado\": \"{{idConductor}}\",\n  \"calificacion\": 5,\n  \"comentario\": \"Todo perfecto\",\n  \"fecha\": \"2024-01-01T10:00:00Z\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/revisiones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "revisiones"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar servicios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/servicios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "servicios"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Consultas",
+      "item": [
+        {
+          "name": "Historico por usuario",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/consultas/usuarios/{{idUsuarioServicio}}/servicios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "consultas",
+                "usuarios",
+                "{{idUsuarioServicio}}",
+                "servicios"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Top conductores",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/consultas/conductores/top",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "consultas",
+                "conductores",
+                "top"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Servicios por ciudad y rango",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/consultas/ciudad?ciudad=Bogota&inicio=2024-01-01T00:00:00Z&fin=2024-12-31T23:59:59Z",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "consultas",
+                "ciudad"
+              ],
+              "query": [
+                {
+                  "key": "ciudad",
+                  "value": "Bogota"
+                },
+                {
+                  "key": "inicio",
+                  "value": "2024-01-01T00:00:00Z"
+                },
+                {
+                  "key": "fin",
+                  "value": "2024-12-31T23:59:59Z"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "idUsuarioServicio",
+      "value": ""
+    },
+    {
+      "key": "idConductor",
+      "value": ""
+    },
+    {
+      "key": "idVehiculo",
+      "value": ""
+    },
+    {
+      "key": "idServicio",
+      "value": ""
+    },
+    {
+      "key": "horaFinMillis",
+      "value": ""
+    }
+  ]
+}
