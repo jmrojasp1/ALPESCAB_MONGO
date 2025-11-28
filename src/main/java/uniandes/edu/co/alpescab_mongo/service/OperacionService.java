@@ -115,25 +115,57 @@ public class OperacionService {
         if (servicioRepository.existsByIdConductorAndEstado(idConductor, "EN_CURSO")) {
             throw new IllegalStateException("Conductor actualmente en servicio");
         }
-         
+
         LocalDate dia = fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        System.out.println(">>> [validarConductorDisponible]");
+        System.out.println("    idConductor = " + idConductor);
+        System.out.println("    fecha       = " + fecha);
+        System.out.println("    dia         = " + dia + " (dayOfWeek=" + dia.getDayOfWeek() + ")");
+
         List<Vehiculo> vehiculos = vehiculoRepository.findAll().stream()
                 .filter(v -> idConductor.equals(v.getIdConductor()))
                 .collect(Collectors.toList());
-        boolean disponible = vehiculos.stream().anyMatch(v -> estaDisponibleEnDia(v, dia));
+
+        System.out.println("    vehiculos del conductor = " + vehiculos.size());
+        vehiculos.forEach(v -> {
+            System.out.println("      - vehiculo " + v.getId());
+            System.out.println("        disponibilidades = " + v.getDisponibilidades());
+        });
+
+        boolean disponible = vehiculos.stream().anyMatch(v -> {
+            boolean r = estaDisponibleEnDia(v, dia);
+            System.out.println("        -> estaDisponibleEnDia(" + v.getId() + ", " + dia + ") = " + r);
+            return r;
+        });
+
+        System.out.println("    resultado disponible = " + disponible);
+
         if (!disponible) {
             throw new IllegalStateException("Conductor sin disponibilidad para la fecha indicada");
         }
     }
 
+
     private boolean estaDisponibleEnDia(Vehiculo vehiculo, LocalDate dia) {
         if (CollectionUtils.isEmpty(vehiculo.getDisponibilidades())) {
             return false;
         }
-        String diaSemana = dia.getDayOfWeek().name();
+
+        String diaSemana = switch (dia.getDayOfWeek()) {
+            case MONDAY    -> "LUNES";
+            case TUESDAY   -> "MARTES";
+            case WEDNESDAY -> "MIERCOLES"; // sin tilde, como en tu BD
+            case THURSDAY  -> "JUEVES";
+            case FRIDAY    -> "VIERNES";
+            case SATURDAY  -> "SABADO";
+            case SUNDAY    -> "DOMINGO";
+        };
+
         return vehiculo.getDisponibilidades().stream()
                 .anyMatch(d -> diaSemana.equalsIgnoreCase(d.getDiaSemana()));
     }
+
 
     private void asignarPrimerConductorDisponible(Servicio servicio) {
         LocalDate dia = servicio.getFechaSolicitud().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import lombok.RequiredArgsConstructor;
+import uniandes.edu.co.alpescab_mongo.model.Disponibilidad;
 import uniandes.edu.co.alpescab_mongo.model.Vehiculo;
 import uniandes.edu.co.alpescab_mongo.service.VehiculoService;
 
@@ -64,4 +65,17 @@ public class VehiculoController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Formato de id inválido");
         }
     }
+
+    @PostMapping("/{id}/disponibilidades")
+    public ResponseEntity<Vehiculo> agregarDisponibilidad(
+            @PathVariable String id,
+            @RequestBody Disponibilidad disponibilidad
+    ) {
+        ObjectId objectId = parseObjectId(id);
+
+        return vehiculoService.agregarDisponibilidad(objectId, disponibilidad)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
 }

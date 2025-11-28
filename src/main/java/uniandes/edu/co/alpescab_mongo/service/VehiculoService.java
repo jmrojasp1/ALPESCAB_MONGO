@@ -1,5 +1,6 @@
 package uniandes.edu.co.alpescab_mongo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,6 +8,7 @@ import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import uniandes.edu.co.alpescab_mongo.model.Disponibilidad;
 import uniandes.edu.co.alpescab_mongo.model.Vehiculo;
 import uniandes.edu.co.alpescab_mongo.repository.VehiculoRepository;
 
@@ -39,4 +41,16 @@ public class VehiculoService {
     public void delete(ObjectId id) {
         vehiculoRepository.deleteById(id);
     }
+
+    public Optional<Vehiculo> agregarDisponibilidad(ObjectId idVehiculo, Disponibilidad disponibilidad) {
+        return vehiculoRepository.findById(idVehiculo)
+                .map(vehiculo -> {
+                    if (vehiculo.getDisponibilidades() == null) {
+                        vehiculo.setDisponibilidades(new ArrayList<>());
+                    }
+                    vehiculo.getDisponibilidades().add(disponibilidad);
+                    return vehiculoRepository.save(vehiculo);
+                });
+    }
+
 }
