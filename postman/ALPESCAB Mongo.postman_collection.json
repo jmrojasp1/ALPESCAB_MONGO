@@ -191,7 +191,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"diaSemana\": \"DOMINGO\",\n  \"horaInicio\": \"02:00\",\n  \"horaFin\": \"03:00\",\n  \"tiposServicioHabilitados\": [\"PASAJEROS\", \"MERCANCIAS\"]\n}\n\n"
+							"raw": "{\n  \"diaSemana\": \"JUEVES\",\n  \"horaInicio\": \"07:00\",\n  \"horaFin\": \"19:00\",\n  \"tiposServicioHabilitados\": [\"PASAJEROS\", \"MERCANCIAS\"]\n}\n\n"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/api/operaciones/vehiculos/{{idVehiculo}}/disponibilidades",
@@ -288,7 +288,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"tipoServicio\": \"PASAJEROS\",\n  \"nivelTransporte\": \"ESTANDAR\",\n  \"idUsuarioServicio\": \"69224e1ce09e4603472328b6\",\n  \"idVehiculo\": \"69224e75e09e4603472328ba\",\n  \"puntosRuta\": [\n    {\n      \"orden\": 1,\n      \"latitud\": 4.651,\n      \"longitud\": -74.083,\n      \"direccion\": \"Punto de recogida\",\n      \"ciudad\": \"Bogotá\"\n    },\n    {\n      \"orden\": 2,\n      \"latitud\": 4.650,\n      \"longitud\": -74.100,\n      \"direccion\": \"Destino\",\n      \"ciudad\": \"Bogotá\"\n    }\n  ],\n  \"distanciaKm\": 10.5,\n  \"costoTotal\": 25000.0,\n  \"fechaSolicitud\": \"2025-11-27T09:00:00.000-05:00\",\n  \"ciudadPrincipal\": \"Bogotá\"\n}\n\n"
+							"raw": "{\n  \"tipoServicio\": \"PASAJEROS\",\n  \"nivelTransporte\": \"ESTANDAR\",\n  \"idUsuarioServicio\": \"6929e64dacd2c407dcc6a249\",\n  \"idVehiculo\": \"6929e64dacd2c407dcc6a24d\",\n  \"puntosRuta\": [\n    {\n      \"orden\": 1,\n      \"latitud\": 4.651,\n      \"longitud\": -74.083,\n      \"direccion\": \"Punto de recogida\",\n      \"ciudad\": \"Bogotá\"\n    },\n    {\n      \"orden\": 2,\n      \"latitud\": 4.650,\n      \"longitud\": -74.100,\n      \"direccion\": \"Destino\",\n      \"ciudad\": \"Bogotá\"\n    }\n  ],\n  \"distanciaKm\": 10.5,\n  \"costoTotal\": 25000.0,\n  \"fechaSolicitud\": \"2025-11-27T09:00:00.000-05:00\",\n  \"ciudadPrincipal\": \"Bogotá\"\n}\n\n"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/api/operaciones/servicios/solicitar",
