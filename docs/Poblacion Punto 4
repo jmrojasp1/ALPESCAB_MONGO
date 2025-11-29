@@ -1,0 +1,311 @@
+// poblacion.js
+
+// evitar datos duplicados si se re-ejecuta
+db.usuarios.deleteMany({});
+db.vehiculos.deleteMany({});
+db.servicios.deleteMany({});
+db.revisiones.deleteMany({});
+
+// 1. USUARIOS
+const u1Id = ObjectId(); // usuario servicio + conductor
+const u2Id = ObjectId(); // solo conductor
+const u3Id = ObjectId(); // solo servicio
+const u4Id = ObjectId(); // solo conductor
+
+db.usuarios.insertMany([
+  {
+    _id: u1Id,
+    nombre: "Julian Restrepo",
+    correo: "julian.restrepo@gmail.com",
+    celular: "3001112233",
+    cedula: "10101010",
+    roles: ["SERVICIO", "CONDUCTOR"],
+    tarjetaCredito: {
+      numero: "4111111111111111",
+      nombreTarjeta: " JULIAN RESTREPO",
+      fechaVencimiento: "12/28",
+      codigoSeguridad: "123"
+    }
+  },
+  {
+    _id: u2Id,
+    nombre: "Juan Manuel Rojas",
+    correo: "juan.rojas@gmail.com",
+    celular: "3002223344",
+    cedula: "20202020",
+    roles: ["CONDUCTOR"]
+  },
+  {
+    _id: u3Id,
+    nombre: "Mariana Castillo",
+    correo: "mariana.castillo@gmail.com",
+    celular: "3003334455",
+    cedula: "30303030",
+    roles: ["SERVICIO"],
+    tarjetaCredito: {
+      numero: "5555555555554444",
+      nombreTarjeta: "MARIANA CASTILLO",
+      fechaVencimiento: "07/27",
+      codigoSeguridad: "456"
+    }
+  },
+  {
+    _id: u4Id,
+    nombre: "Miguel Torres",
+    correo: "miguel.torres@gmail.com",
+    celular: "3004445566",
+    cedula: "40404040",
+    roles: ["CONDUCTOR"]
+  }
+]);
+
+// 2. VEHICULOS
+const v1Id = ObjectId();
+const v2Id = ObjectId();
+const v3Id = ObjectId();
+
+db.vehiculos.insertMany([
+  {
+    _id: v1Id,
+    tipo: "CARRO",
+    marca: "Kia",
+    modelo: "Rio 2022",
+    color: "Blanco",
+    placa: "ABC123",
+    ciudadPlaca: "Bogotá",
+    capacidadPasajeros: NumberInt(4),
+    nivelTransporte: "ESTANDAR",
+    idConductor: u2Id,
+    disponibilidades: [
+      {
+        diaSemana: "LUNES",
+        horaInicio: "07:00",
+        horaFin: "19:00",
+        tiposServicioHabilitados: ["PASAJEROS"]
+      },
+      {
+        diaSemana: "MARTES",
+        horaInicio: "07:00",
+        horaFin: "19:00",
+        tiposServicioHabilitados: ["PASAJEROS", "COMIDA"]
+      }
+    ]
+  },
+  {
+    _id: v2Id,
+    tipo: "CAMIONETA",
+    marca: "Toyota",
+    modelo: "Hilux 2021",
+    color: "Negro",
+    placa: "DEF456",
+    ciudadPlaca: "Medellín",
+    capacidadPasajeros: NumberInt(5),
+    nivelTransporte: "CONFORT",
+    idConductor: u1Id,
+    disponibilidades: [
+      {
+        diaSemana: "MIERCOLES",
+        horaInicio: "06:00",
+        horaFin: "20:00",
+        tiposServicioHabilitados: ["PASAJEROS", "MERCANCIAS"]
+      }
+    ]
+  },
+  {
+    _id: v3Id,
+    tipo: "MOTO",
+    marca: "Bajaj",
+    modelo: "Boxer 2020",
+    color: "Rojo",
+    placa: "GHI789",
+    ciudadPlaca: "Bogotá",
+    capacidadPasajeros: NumberInt(1),
+    nivelTransporte: "ESTANDAR",
+    idConductor: u4Id,
+    disponibilidades: [
+      {
+        diaSemana: "JUEVES",
+        horaInicio: "08:00",
+        horaFin: "18:00",
+        tiposServicioHabilitados: ["COMIDA", "MERCANCIAS"]
+      }
+    ]
+  }
+]);
+
+// 3. SERVICIOS (VIAJES)
+
+const s1Id = ObjectId();
+const s2Id = ObjectId();
+const s3Id = ObjectId();
+const s4Id = ObjectId();
+const s5Id = ObjectId();
+const s6Id = ObjectId();
+
+db.servicios.insertMany([
+
+  {
+    _id: s1Id,
+    tipoServicio: "PASAJEROS",
+    nivelTransporte: "ESTANDAR",
+    idUsuarioServicio: u3Id,
+    idConductor: u1Id,
+    idVehiculo: v2Id,
+    puntosRuta: [
+      { orden: NumberInt(0), latitud: 4.710989, longitud: -74.07209, direccion: "Cra 7 # 72-01", ciudad: "Bogotá" },
+      { orden: NumberInt(1), latitud: 4.65, longitud: -74.1, direccion: "Av. 68 con 26", ciudad: "Bogotá" }
+    ],
+    distanciaKm: 12.5,
+    costoTotal: 25000.5,
+    fechaSolicitud: new Date("2025-04-01T10:00:00Z"),
+    horaInicio: new Date("2025-04-01T10:10:00Z"),
+    horaFin: new Date("2025-04-01T10:35:00Z"),
+    duracionMin: NumberInt(25),
+    ciudadPrincipal: "Bogotá",
+    estado: "FINALIZADO"
+  },
+  {
+    _id: s2Id,
+    tipoServicio: "PASAJEROS",
+    nivelTransporte: "CONFORT",
+    idUsuarioServicio: u3Id,
+    idConductor: u2Id,
+    idVehiculo: v1Id,
+    puntosRuta: [
+      { orden: NumberInt(0), latitud: 6.244338, longitud: -75.573553, direccion: "Poblado Parque", ciudad: "Medellín" },
+      { orden: NumberInt(1), latitud: 6.25184, longitud: -75.563591, direccion: "Centro Comercial Mayorca", ciudad: "Sabaneta" }
+    ],
+    distanciaKm: 8.3,
+    costoTotal: 30000.7,
+    fechaSolicitud: new Date("2025-04-02T14:00:00Z"),
+    horaInicio: new Date("2025-04-02T14:10:00Z"),
+    horaFin: new Date("2025-04-02T14:35:00Z"),
+    duracionMin: NumberInt(25),
+    ciudadPrincipal: "Medellín",
+    estado: "FINALIZADO"
+  },
+
+  {
+    _id: s3Id,
+    tipoServicio: "COMIDA",
+    nivelTransporte: null,
+    idUsuarioServicio: u1Id,
+    idConductor: u4Id,
+    idVehiculo: v3Id,
+    puntosRuta: [
+      { orden: NumberInt(0), latitud: 4.710989, longitud: -74.07209, direccion: "Restaurante Chapinero", ciudad: "Bogotá" },
+      { orden: NumberInt(1), latitud: 4.632, longitud: -74.085, direccion: "Conjunto Cedritos", ciudad: "Bogotá" }
+    ],
+    distanciaKm: 6.2,
+    costoTotal: 12000.4,
+    fechaSolicitud: new Date("2025-04-03T19:00:00Z"),
+    horaInicio: new Date("2025-04-03T19:10:00Z"),
+    horaFin: new Date("2025-04-03T19:30:00Z"),
+    duracionMin: NumberInt(20),
+    ciudadPrincipal: "Bogotá",
+    estado: "FINALIZADO"
+  },
+
+  {
+    _id: s4Id,
+    tipoServicio: "MERCANCIAS",
+    nivelTransporte: null,
+    idUsuarioServicio: u3Id,
+    idConductor: u2Id,
+    idVehiculo: v1Id,
+    puntosRuta: [
+      { orden: NumberInt(0), latitud: 6.244338, longitud: -75.573553, direccion: "Bodega Centro", ciudad: "Medellín" },
+      { orden: NumberInt(1), latitud: 6.27, longitude: -75.6, direccion: "Cliente Industriales", ciudad: "Medellín" }
+    ],
+    distanciaKm: 15.6,
+    costoTotal: 45000.8,
+    fechaSolicitud: new Date("2025-04-04T09:00:00Z"),
+    horaInicio: new Date("2025-04-04T09:15:00Z"),
+    horaFin: new Date("2025-04-04T09:50:00Z"),
+    duracionMin: NumberInt(35),
+    ciudadPrincipal: "Medellín",
+    estado: "FINALIZADO"
+  },
+  {
+    _id: s5Id,
+    tipoServicio: "PASAJEROS",
+    nivelTransporte: "ESTANDAR",
+    idUsuarioServicio: u3Id,
+    idConductor: u2Id,
+    idVehiculo: v1Id,
+    puntosRuta: [
+      { orden: NumberInt(0), latitud: 6.244338, longitud: -75.573553, direccion: "Universidad", ciudad: "Medellín" },
+      { orden: NumberInt(1), latitud: 6.26, longitud: -75.58, direccion: "Estadio", ciudad: "Medellín" }
+    ],
+    distanciaKm: 5.5,
+    costoTotal: 18000.9,
+    fechaSolicitud: new Date("2025-04-05T08:00:00Z"),
+    horaInicio: new Date("2025-04-05T08:10:00Z"),
+    horaFin: new Date("2025-04-05T08:30:00Z"),
+    duracionMin: NumberInt(20),
+    ciudadPrincipal: "Medellín",
+    estado: "FINALIZADO"
+  },
+  {
+    _id: s6Id,
+    tipoServicio: "PASAJEROS",
+    nivelTransporte: "ESTANDAR",
+    idUsuarioServicio: u1Id,
+    idConductor: u2Id,
+    idVehiculo: v2Id,
+    puntosRuta: [
+      { orden: NumberInt(0), latitud: 4.710989, longitud: -74.07209, direccion: "Parque de la 93", ciudad: "Bogotá" },
+      { orden: NumberInt(1), latitud: 4.648283, longitud: -74.247894, direccion: "Aeropuerto El Dorado", ciudad: "Bogotá" }
+    ],
+    distanciaKm: 14.4,
+    costoTotal: 32000.2,
+    fechaSolicitud: new Date("2025-04-06T06:30:00Z"),
+    horaInicio: new Date("2025-04-06T06:40:00Z"),
+    horaFin: new Date("2025-04-06T07:05:00Z"),
+    duracionMin: NumberInt(25),
+    ciudadPrincipal: "Bogotá",
+    estado: "FINALIZADO"
+  }
+]);
+
+// 4. REVISIONES
+
+db.revisiones.insertMany([
+  {
+    tipo: "USUARIO_A_CONDUCTOR",
+    idServicio: s1Id,
+    idRevisor: u3Id,
+    idRevisado: u1Id,
+    calificacion: NumberInt(5),
+    comentario: "Muy buen servicio, conductor puntual.",
+    fecha: new Date("2025-04-01T11:00:00Z")
+  },
+  {
+    tipo: "CONDUCTOR_A_USUARIO",
+    idServicio: s1Id,
+    idRevisor: u1Id,
+    idRevisado: u3Id,
+    calificacion: NumberInt(5),
+    comentario: "Usuario amable y puntual.",
+    fecha: new Date("2025-04-01T11:05:00Z")
+  },
+  {
+    tipo: "USUARIO_A_CONDUCTOR",
+    idServicio: s2Id,
+    idRevisor: u3Id,
+    idRevisado: u2Id,
+    calificacion: NumberInt(4),
+    comentario: "Buen servicio, algo de tráfico.",
+    fecha: new Date("2025-04-02T15:00:00Z")
+  },
+
+  {
+    tipo: "USUARIO_A_CONDUCTOR",
+    idServicio: s3Id,
+    idRevisor: u1Id,
+    idRevisado: u4Id,
+    calificacion: NumberInt(5),
+    comentario: "Entrega rápida del pedido.",
+    fecha: new Date("2025-04-03T20:00:00Z")
+  }
+]);
